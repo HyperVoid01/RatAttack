@@ -4,7 +4,7 @@ public class Pizza : MonoBehaviour
 {
     [SerializeField] private GameObject raw;
     [SerializeField] private GameObject[] pizzaVariants = new GameObject[6];
-    [SerializeField] private MeshRenderer[] meshRenderers = new MeshRenderer[6];
+    //[SerializeField] private MeshRenderer[] meshRenderers = new MeshRenderer[6];
 
     [SerializeField] private Material rawMaterial;
     [SerializeField] private Material cookedMaterial;
@@ -25,10 +25,26 @@ public class Pizza : MonoBehaviour
         return pizzaVariants[(int)f];
     }
 
+    // public void Cook()
+    // {
+    //     pizzaState = PizzaState.cooked;
+    //     GetVisualFor(flavour).transform.GetChild(0).GetComponent<MeshRenderer>().material = cookedMaterial;
+    // }
+    //
     public void Cook()
     {
         pizzaState = PizzaState.cooked;
-        GetVisualFor(flavour).transform.GetChild(0).GetComponent<MeshRenderer>().material = cookedMaterial;
+
+        GameObject visual = GetVisualFor(flavour);
+        MeshRenderer renderer = visual.GetComponentInChildren<MeshRenderer>();
+
+        if (renderer == null)
+        {
+            Debug.LogError($"Cook: no MeshRenderer found on or under {visual.name}", this);
+            return;
+        }
+
+        renderer.material = cookedMaterial;
     }
 
     public void ChangeFlavor(Flavour newFlavour)

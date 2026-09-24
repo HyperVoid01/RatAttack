@@ -1146,9 +1146,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5863704989097373810}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
+  m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071067}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 100, y: 100, z: 5.2389126}
+  m_LocalScale: {x: 100, y: 100, z: 5.2389116}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3739977171268490803}
@@ -1524,13 +1524,6 @@ MonoBehaviour:
   - {fileID: 3868375606176578230}
   - {fileID: 5561783300685624111}
   - {fileID: 1736477572810606315}
-  meshRenderers:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
   rawMaterial: {fileID: 2100000, guid: 6223729563f3e4342b8bfeac17db6e1f, type: 2}
   cookedMaterial: {fileID: 2100000, guid: 5eb86ad4957ad5441b9229cf7dfe821c, type: 2}
 --- !u!114 &2933809536844677125

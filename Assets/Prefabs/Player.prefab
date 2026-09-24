@@ -207,7 +207,7 @@ MonoBehaviour:
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
   m_RenderPostProcessing: 1
-  m_Antialiasing: 0
+  m_Antialiasing: 1
   m_AntialiasingQuality: 2
   m_StopNaN: 0
   m_Dithering: 0
@@ -239,11 +239,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6cc0aa1bbb996d648a03020b9bbe571c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mouseSensitivity: 2
-  cameraClampY: 90
-  isActive: 1
   panDuration: 1
-  playerBody: {fileID: 3239666569538837300}
 --- !u!114 &8886595756698149305
 MonoBehaviour:
   m_ObjectHideFlags: 0

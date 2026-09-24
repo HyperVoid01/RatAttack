@@ -4,7 +4,9 @@ using UnityEngine;
 [RequireComponent(typeof(BoxCollider))]
 public class Oven : MonoBehaviour
 {
-    [SerializeField] private float cookingTime;
+    [SerializeField] private float[] cookingTimes = new float[3];
+    private int _level = 1;
+    //[SerializeField] public float cookingTime;
     public GameObject pizzaObject;
     private Pizza currentPizza;
     public ParticleSystem cookingParticles;
@@ -33,8 +35,13 @@ public class Oven : MonoBehaviour
     private IEnumerator Cooking()
     {
         cookingParticles.Play();
-        yield return new WaitForSeconds(cookingTime);
+        yield return new WaitForSeconds(cookingTimes[_level - 1]);
         currentPizza.Cook();
         cookingParticles.Stop();
+    }
+
+    public void UpgradeOven(int newlevel)
+    {
+        _level = newlevel;
     }
 }
