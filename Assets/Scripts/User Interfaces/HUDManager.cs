@@ -14,9 +14,12 @@ public class HUDManager : MonoBehaviour
     [Header("Customer Orders")]
     [SerializeField] private Transform orderTextRoot;
     [SerializeField] private GameObject orderDetails;
-    
-    [Header("Computer")]
-    
+
+    [Header("StarRating")] 
+    [SerializeField] private Transform starRatingOrigin;   // parent transform stars live under
+    [SerializeField] private GameObject starRatingImage;   // star prefab
+    private const int MaxStars = 18;
+    private GameObject[] starRatingObjects = new GameObject[MaxStars];
     
     Dictionary<CustomerBehaviour, GameObject> customerOrders = new Dictionary<CustomerBehaviour, GameObject>();
 
@@ -31,6 +34,35 @@ public class HUDManager : MonoBehaviour
         }
 
         Instance = this;
+    }
+
+    private void Start()
+    {
+        InitializeStarPool();
+        UpdateStarRating();
+    }
+
+    private void InitializeStarPool()
+    {
+        for (int i = 0; i < MaxStars; i++)
+        {
+            GameObject star = Instantiate(starRatingImage, starRatingOrigin);
+            star.SetActive(false);
+            starRatingObjects[i] = star;
+        }
+    }
+
+    public void UpdateStarRating()
+    {
+        int rating = Mathf.Clamp(ReputationManager.Instance.starRating, 0, MaxStars);
+
+        for (int i = 0; i < starRatingObjects.Length; i++)
+        {
+            if (starRatingObjects[i] == null)
+                continue;
+
+            starRatingObjects[i].SetActive(i < rating);
+        }
     }
     
     public void EnableInteractionText(string text)

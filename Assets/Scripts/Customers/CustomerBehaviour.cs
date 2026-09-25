@@ -111,7 +111,9 @@ public class CustomerBehaviour : MonoBehaviour
         
         yield return new WaitForSeconds(0.5f);
         StartCoroutine(movement.Leave());
-        GameManager.Instance.money += 50;
+        
+        GameManager.Instance.money += data.payAmount;
+        ReputationManager.Instance.IncreaseReputation(data.reputationIncrease);
     }
 
     private IEnumerator CheckForRats()

@@ -10,9 +10,9 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float gravity = 10f;
     [SerializeField] private float lookSpeed = 2f;
     [SerializeField] private float lookXLimit = 45f;
-    [SerializeField] private float defaultHeight = 2f;
-    [SerializeField] private float crouchHeight = 1f;
-    [SerializeField] private float crouchSpeed = 3f;
+    // [SerializeField] private float defaultHeight = 2f;
+    // [SerializeField] private float crouchHeight = 1f;
+    // [SerializeField] private float crouchSpeed = 3f;
 
     private Vector3 moveDirection = Vector3.zero;
     private float rotationX = 0;

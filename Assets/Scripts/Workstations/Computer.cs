@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
+using Cursor = UnityEngine.Cursor;
 
 public class Computer : MonoBehaviour
 {
@@ -14,8 +16,20 @@ public class Computer : MonoBehaviour
 
     [Header("User Interfaces")]
     [SerializeField] private TMP_Text balance;
+    [SerializeField] private TMP_Text starRating;
+    [SerializeField] private Slider starProgressionSlider;
     [SerializeField] private GameObject pestControlMenu;
     [SerializeField] private GameObject upgradesMenu;
+    
+    [Header("Descriptions")]
+    [SerializeField] private TMP_Text ovenCostText;
+    [SerializeField] private Slider ovenLevelSlider;
+    
+    [SerializeField] private TMP_Text diningCostText;
+    [SerializeField] private Slider diningLevelSlider;
+    
+    [SerializeField] private TMP_Text interiorCostText;
+    [SerializeField] private Slider interiorLevelSlider;
     
     public void UseComputer()
     {
@@ -48,9 +62,50 @@ public class Computer : MonoBehaviour
         });
     }
 
-    private void UpdateUI()
+    public void UpdateUI()
     {
         balance.text = "Balance: R" + GameManager.Instance.money;
+        float percentage = ReputationManager.Instance.GetPercentageToNextRating();
+        starRating.text = (ReputationManager.Instance.starRating + percentage).ToString();
+        starProgressionSlider.value = 1 - percentage;
+        
+        UpdateCostsUI();
+    }
+
+    private void UpdateCostsUI()
+    {
+        float[] ovenCosts = UpgradeManager.Instance.GetOvenCosts();
+        if (ovenCosts != null)
+        {
+            ovenCostText.text = $"R{ovenCosts[1]}\nREP:{ovenCosts[0]}";
+            ovenLevelSlider.value = UpgradeManager.Instance._ovenLevel;
+        }
+        else
+        {
+            ovenCostText.text = "MAX LEVEL";
+        }
+        
+        float[] diningCosts = UpgradeManager.Instance.GetDiningCosts();
+        if (diningCosts != null)
+        {
+            diningCostText.text = $"R{diningCosts[1]}\nREP:{diningCosts[0]}";
+            diningLevelSlider.value = UpgradeManager.Instance._diningLevel;
+        }
+        else
+        {
+            diningCostText.text = "MAX LEVEL";
+        }
+        
+        float[] interiorCosts = UpgradeManager.Instance.GetInteriorCosts();
+        if (interiorCosts != null)
+        {
+            interiorCostText.text = $"R{interiorCosts[1]}\nREP:{interiorCosts[0]}";
+            interiorLevelSlider.value = UpgradeManager.Instance._interiorLevel;
+        }
+        else
+        {
+            interiorCostText.text = "MAX LEVEL";
+        }
     }
 
     public void OpenPestControlMenu()

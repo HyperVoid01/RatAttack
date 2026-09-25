@@ -20,6 +20,10 @@ public class ItemPickup : MonoBehaviour
     private Rigidbody currentPickupRb;
     private bool isHolding;
     
+    // Prevents instantly re-grabbing an item the same frame it's dropped/thrown
+    // while Mouse0 is still held down (e.g. throwing via a separate key while carrying).
+    private bool blockGrabUntilMouseRelease;
+    
     private CollisionDetectionMode originalCollisionMode;
 
     private void Update()
@@ -29,7 +33,15 @@ public class ItemPickup : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (Input.GetMouseButton(0) && Physics.SphereCast(playerCamera.transform.position, radius, playerCamera.transform.forward, out RaycastHit hit, range, layer) && !currentPickup)
+        if (blockGrabUntilMouseRelease)
+        {
+            if (!Input.GetMouseButton(0))
+            {
+                blockGrabUntilMouseRelease = false;
+            }
+        }
+
+        if (!blockGrabUntilMouseRelease && Input.GetMouseButton(0) && Physics.SphereCast(playerCamera.transform.position, radius, playerCamera.transform.forward, out RaycastHit hit, range, layer) && !currentPickup)
         {
             currentPickup = hit.collider.gameObject;
             currentPickupRb = currentPickup.GetComponent<Rigidbody>();
@@ -68,6 +80,13 @@ public class ItemPickup : MonoBehaviour
         isHolding = false;
         currentPickup = null;
         currentPickupRb = null;
+        blockGrabUntilMouseRelease = true;
+    }
+
+    public void ReleaseHeldItem()
+    {
+        if (!currentPickup) return;
+        DropItem();
     }
 
     private void MovePickupItem()
@@ -79,16 +98,14 @@ public class ItemPickup : MonoBehaviour
             DropItem();
             return;
         }
-        
+
         Transform camTransform = playerCamera.transform;
         Vector3 targetPosition = camTransform.position + camTransform.forward * currentHoldDistance;
-        
-        // Position: steer velocity toward the target point (spring-like)
+
         Vector3 toTarget = targetPosition - currentPickupRb.position;
         Vector3 desiredVelocity = toTarget * followStrength;
         currentPickupRb.linearVelocity = Vector3.ClampMagnitude(desiredVelocity, maxHoldSpeed);
 
-        // Rotation: steer angular velocity toward matching the player's rotation
         Quaternion rotDelta = camTransform.rotation * Quaternion.Inverse(currentPickupRb.rotation);
         rotDelta.ToAngleAxis(out float angleDeg, out Vector3 axis);
         if (angleDeg > 180f) angleDeg -= 360f;
@@ -124,11 +141,9 @@ public class ItemPickup : MonoBehaviour
 
         Gizmos.color = didHit ? Color.green : Color.red;
 
-        // Start and end spheres of the sweep
         Gizmos.DrawWireSphere(start, radius);
         Gizmos.DrawWireSphere(end, radius);
 
-        // Side lines to suggest the swept "capsule" silhouette
         Vector3 up = camTransform.up * radius;
         Vector3 right = camTransform.right * radius;
         Gizmos.DrawLine(start + up, end + up);

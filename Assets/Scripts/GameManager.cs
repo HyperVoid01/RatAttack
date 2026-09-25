@@ -3,6 +3,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public int money = 100;
+    public int ammo = 10;
     
     public static GameManager Instance;
 

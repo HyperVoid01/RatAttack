@@ -17,3 +17,6 @@ MonoBehaviour:
   eatTime: 15
   ratDetectionRadius: 4
   ratTolerance: 5
+  payAmount: 50
+  reputationIncrease: 0.2
+  reputationDecrease: 0.1
