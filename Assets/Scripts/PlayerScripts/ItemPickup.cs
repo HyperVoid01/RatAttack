@@ -33,6 +33,15 @@ public class ItemPickup : MonoBehaviour
 
     private void LateUpdate()
     {
+        switch (GameManager.Instance.AreHandsClean)
+        {
+            case false when CheckPizza() && currentPickup:
+                DropItem();
+                return;
+            case false when CheckPizza():
+                return;
+        }
+        
         if (blockGrabUntilMouseRelease)
         {
             if (!Input.GetMouseButton(0))
@@ -50,6 +59,7 @@ public class ItemPickup : MonoBehaviour
 
             originalCollisionMode = currentPickupRb.collisionDetectionMode;
             currentPickupRb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
+            currentPickupRb.interpolation = RigidbodyInterpolation.Interpolate;
 
             currentPickupRb.useGravity = false;
             currentPickupRb.linearDamping = 0f;
@@ -65,10 +75,23 @@ public class ItemPickup : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (!GameManager.Instance.AreHandsClean && CheckPizza())
+            return;
+        
         if (isHolding && currentPickup)
         {
             MovePickupItem();
         }
+    }
+
+    private bool CheckPizza()
+    {
+        if (currentPickup && currentPickup.GetComponent<Pizza>() != null)
+        {
+            return true;
+        }
+
+        return false;
     }
 
     private void DropItem()

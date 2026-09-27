@@ -50,7 +50,10 @@ public class ReputationManager : MonoBehaviour
     {
         Reputation = Mathf.Clamp(Reputation - amount, 0f, 100);
 
-        if (starRating > 0 && Reputation < starRatingThresholds[starRating - 1])
+        if (starRating > 0)
+            return;
+        
+        if (Reputation < starRatingThresholds[starRating - 1])
         {
             starRating--;
             HUDManager.Instance.UpdateStarRating();

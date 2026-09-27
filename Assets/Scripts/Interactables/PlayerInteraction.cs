@@ -121,7 +121,24 @@ public class PlayerInteraction : MonoBehaviour
     {
         currentInteractable = interactable;
         currentInteractable.EnableOutline();
-        HUDManager.Instance.EnableInteractionText(currentInteractable.message);
+
+        if (currentInteractable.GetComponent<Shotgun>())
+        {
+            HUDManager.Instance.EnableInteractionText(currentInteractable.message, true, false);
+        }
+        else if (currentInteractable.GetComponent<AmmoBox>())
+        {
+            HUDManager.Instance.EnableInteractionText(currentInteractable.message, true, false);
+            HUDManager.Instance.UpdateAmmoCounter(currentInteractable.GetComponent<AmmoBox>().Ammo);
+        }
+        else if (currentInteractable.GetComponent<Pizza>())
+        {
+            HUDManager.Instance.EnableInteractionText(currentInteractable.message, false, !GameManager.Instance.AreHandsClean);
+        }
+        else
+        {
+            HUDManager.Instance.EnableInteractionText(currentInteractable.message, false, false);
+        }
     }
 
     private void DisableCurrentInteractable()

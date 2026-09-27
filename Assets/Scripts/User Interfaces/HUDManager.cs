@@ -6,6 +6,7 @@ public class HUDManager : MonoBehaviour
 {
     [Header("Interactions")]
     [SerializeField] private TMP_Text interactionText;
+    [SerializeField] private GameObject dirtyHandsText;
     
     [Header("HUDs")]
     [SerializeField] private GameObject playerHud;
@@ -20,6 +21,10 @@ public class HUDManager : MonoBehaviour
     [SerializeField] private GameObject starRatingImage;   // star prefab
     private const int MaxStars = 18;
     private GameObject[] starRatingObjects = new GameObject[MaxStars];
+    
+    [Header("Ammo")]
+    [SerializeField] private GameObject ammoCounterObject;
+    [SerializeField] private TextMeshProUGUI ammoCounterText;
     
     Dictionary<CustomerBehaviour, GameObject> customerOrders = new Dictionary<CustomerBehaviour, GameObject>();
 
@@ -64,19 +69,46 @@ public class HUDManager : MonoBehaviour
             starRatingObjects[i].SetActive(i < rating);
         }
     }
-    
-    public void EnableInteractionText(string text)
+
+    public void UpdateAmmoCounter(int ammoAddition = 0)
     {
+        ammoCounterText.text = ammoAddition > 0 ? $"{GameManager.Instance.Ammo} + {ammoAddition}" : GameManager.Instance.Ammo.ToString();
+    }
+    
+    public void EnableInteractionText(string text, bool showAmmoCount, bool dirtyHands)
+    {
+        if (showAmmoCount)
+        {
+            ammoCounterObject.SetActive(true);
+            UpdateAmmoCounter();
+        }
+        else
+        {
+            ammoCounterObject.SetActive(false);
+        }
+
         if (Input.GetMouseButton(0)) // Ignores enabling when holding items
             return;
-        
-        interactionText.text = text;
-        interactionText.gameObject.SetActive(true);
+
+        if (dirtyHands)
+        {
+            dirtyHandsText.SetActive(true);
+            interactionText.gameObject.SetActive(false);
+        }
+        else
+        {
+            dirtyHandsText.SetActive(false);
+            interactionText.text = text;
+            interactionText.gameObject.SetActive(true);
+        }
     }
 
     public void DisableInteractionText()
     {
         interactionText.gameObject.SetActive(false);
+        ammoCounterObject.SetActive(false);
+        
+        dirtyHandsText.SetActive(false);
     }
 
     public void AddOrderText(CustomerBehaviour customer, string text)

@@ -1,4 +1,5 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -6,6 +7,10 @@ public class CustomerMovement : MonoBehaviour
 {
     [SerializeField] private CustomerData data;
     [SerializeField] private Transform pizzaSlot; // where customers hold pizza
+    
+    [SerializeField] private GameObject timerCanvas;
+    [SerializeField] private TMP_Text timerText;
+    [SerializeField] private Camera targetCamera;
     
     private GameObject currentPizza;
     private bool slotReserved;
@@ -21,6 +26,7 @@ public class CustomerMovement : MonoBehaviour
     private CustomerBehaviour behaviour;
     
     private Coroutine waitForOrderRoutine;
+    private Coroutine updateTimerRoutine;
 
     private void Awake()
     {
@@ -31,6 +37,13 @@ public class CustomerMovement : MonoBehaviour
 
     private void Start()
     {
+        if (targetCamera == null)
+        {
+            targetCamera = Camera.main;
+        }
+        
+        timerCanvas.SetActive(false);
+        
         TryReserveSlot();
     }
 
@@ -84,6 +97,8 @@ public class CustomerMovement : MonoBehaviour
 
     private void LateUpdate()
     {
+        timerCanvas.transform.rotation = Quaternion.LookRotation(timerCanvas.transform.position - targetCamera.transform.position);
+        
         if (currentPizza && !seated)
         {
             currentPizza.transform.position = pizzaSlot.position;
@@ -113,19 +128,41 @@ public class CustomerMovement : MonoBehaviour
         seat = table.TakeSeat(gameObject);
         agent.SetDestination(seat.position);
         waitForOrderRoutine = StartCoroutine(WaitForOrder());
+        updateTimerRoutine = StartCoroutine(UpdateTimer());
     }
 
-    public IEnumerator WaitForOrder()
+    private IEnumerator WaitForOrder()
     {
         yield return new WaitForSeconds(data.orderWaitTime);
         HUDManager.Instance.RemoveOrderDetails(behaviour);
         StartCoroutine(Leave());
+    }
+
+    private IEnumerator UpdateTimer()
+    {
+        timerCanvas.SetActive(true);
+        float time = data.orderWaitTime;
+        
+        while (time > 0f)
+        {
+            timerText.text = Mathf.Round(time).ToString(); 
+            time -= Time.deltaTime;
+            yield return null;
+        }
+        
+        timerCanvas.SetActive(false);
     }
     
     public IEnumerator PickupPizza(Transform target, GameObject pizza) // Pickup pizza from pickup station
     {
         if (waitForOrderRoutine != null)
             StopCoroutine(waitForOrderRoutine);
+        if (updateTimerRoutine != null)
+        {
+            StopCoroutine(updateTimerRoutine);
+            timerCanvas.SetActive(false);
+        }
+        
         PickupStation.Instance.waitingCustomers.Remove(behaviour);
         agent.SetDestination(target.position);
         
@@ -162,6 +199,12 @@ public class CustomerMovement : MonoBehaviour
             stillQueuing = false;
             behaviour.joinedQueue = false;
             OrderStation.Instance.RemoveFromLine(behaviour);
+        }
+        
+        if (updateTimerRoutine != null)
+        {
+            StopCoroutine(updateTimerRoutine);
+            timerCanvas.SetActive(false);
         }
 
         if (currentTable)

@@ -13,10 +13,17 @@ public class PlayerMovement : MonoBehaviour
     // [SerializeField] private float defaultHeight = 2f;
     // [SerializeField] private float crouchHeight = 1f;
     // [SerializeField] private float crouchSpeed = 3f;
+    
+    [Header("Recoil")]
+    [SerializeField] private float recoilSnappiness = 8f;  // how fast the kick snaps in
+    [SerializeField] private float recoilReturnSpeed = 4f; // how fast it settles back
 
     private Vector3 moveDirection = Vector3.zero;
     private float rotationX = 0;
     private CharacterController characterController;
+    
+    private float recoilCurrent; 
+    private float recoilTarget;
 
     public bool canMove = true;
     
@@ -86,6 +93,10 @@ public class PlayerMovement : MonoBehaviour
         // Move Player
         characterController.Move(moveDirection * Time.deltaTime);
         
+        // Recoil decay (runs every frame regardless of canMove, so a kick still settles even if input is frozen)
+        recoilTarget = Mathf.Lerp(recoilTarget, 0f, recoilReturnSpeed * Time.deltaTime);
+        recoilCurrent = Mathf.Lerp(recoilCurrent, recoilTarget, recoilSnappiness * Time.deltaTime);
+        
         // Mouse Look
         if (canMove)
         {
@@ -94,5 +105,14 @@ public class PlayerMovement : MonoBehaviour
             playerCamera.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
             transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * lookSpeed, 0);
         }
+        
+        // Single writer to camera localRotation: mouse look + recoil combined here
+        playerCamera.transform.localRotation = Quaternion.Euler(rotationX - recoilCurrent, 0, 0);
+    }
+    
+    // Adds an upward camera kick (in degrees). Call from weapon scripts on fire.
+    public void AddRecoil(float angle)
+    {
+        recoilTarget += angle;
     }
 }

@@ -68,7 +68,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d0c809be5dc60f4a9eb889983884e3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  message: Clean Up
+  message: Clean
   onInteraction:
     m_PersistentCalls:
       m_Calls: []
@@ -279,6 +279,11 @@ MonoBehaviour:
   pizzaSlot: {fileID: 3355853780051395075}
   aliveMesh: {fileID: 1643811611570751099}
   deadMesh: {fileID: 274503380195551909}
+  bloodDecalMaterials:
+  - {fileID: 2100000, guid: 8ec74d828b456f541a435e829a2196f1, type: 2}
+  - {fileID: 2100000, guid: a303aa8270a089948b14db6316b2f460, type: 2}
+  - {fileID: 2100000, guid: 312a574403e2f3d4a8a441a414c66d74, type: 2}
+  bloodDecalPrefab: {fileID: 8185457477977874172, guid: b7eedbcc9da9d87468a1b05720dc72d4, type: 3}
   boxCollider: {fileID: 0}
   player: {fileID: 0}
 --- !u!1 &4844201455834368446

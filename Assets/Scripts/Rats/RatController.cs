@@ -9,6 +9,8 @@ public class RatController : MonoBehaviour, ITargetable
     [SerializeField] private Transform pizzaSlot;
     [SerializeField] private GameObject aliveMesh;
     [SerializeField] private GameObject deadMesh;
+    [SerializeField] private Material[] bloodDecalMaterials;
+    [SerializeField] private GameObject bloodDecalPrefab;
     
     public Collider boxCollider;
     
@@ -261,8 +263,19 @@ public class RatController : MonoBehaviour, ITargetable
             GetComponent<Collider>().enabled = false;
             aliveMesh.SetActive(false);
             deadMesh.SetActive(true);
-            Debug.Log("Died");
+            SpawnDecal();
         }
+    }
+
+    private void SpawnDecal()
+    {
+        float x = Random.value * 1.5f;
+        float z = Random.value * 1.5f;
+        
+        Vector3 position = transform.position + new Vector3(x, 0, z);
+        
+        DecalCleaning decal = Instantiate(bloodDecalPrefab, position, Quaternion.identity).GetComponent<DecalCleaning>();
+        decal.Initialize(bloodDecalMaterials);
     }
 
     public void Heal(int healing)
@@ -296,6 +309,7 @@ public class RatController : MonoBehaviour, ITargetable
     private IEnumerator CleanUp()
     {
         yield return new WaitForSeconds(data.cleanUpDuration);
+        GameManager.Instance.DirtyHands();
         StopCoroutine(shakeRoutine);
         Destroy(gameObject);
     }

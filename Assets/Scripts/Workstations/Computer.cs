@@ -64,7 +64,7 @@ public class Computer : MonoBehaviour
 
     public void UpdateUI()
     {
-        balance.text = "Balance: R" + GameManager.Instance.money;
+        balance.text = "Balance: R" + GameManager.Instance.Money;
         float percentage = ReputationManager.Instance.GetPercentageToNextRating();
         starRating.text = (ReputationManager.Instance.starRating + percentage).ToString();
         starProgressionSlider.value = 1 - percentage;
@@ -128,9 +128,9 @@ public class Computer : MonoBehaviour
 
     public void BuyItem(int itemIndex)
     {
-        if (GameManager.Instance.money >= purchaseItems[itemIndex].price)
+        if (GameManager.Instance.Money >= purchaseItems[itemIndex].price)
         {
-            GameManager.Instance.money -= purchaseItems[itemIndex].price;
+            GameManager.Instance.DecreaseMoney(purchaseItems[itemIndex].price);
             Instantiate(purchaseItems[itemIndex].prefab, spawnPoint.position, Quaternion.identity);
             UpdateUI();
         }

@@ -7,6 +7,7 @@ public class CustomerBehaviour : MonoBehaviour
 {
     [SerializeField] private CustomerData data;
     [SerializeField] private LayerMask ratLayer;
+    
     private int ratSightingMeter = 0;
     private Flavour order;
     public bool orderTaken;
@@ -112,7 +113,7 @@ public class CustomerBehaviour : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         StartCoroutine(movement.Leave());
         
-        GameManager.Instance.money += data.payAmount;
+        GameManager.Instance.IncreaseMoney(data.payAmount);
         ReputationManager.Instance.IncreaseReputation(data.reputationIncrease);
     }
 

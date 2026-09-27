@@ -51,10 +51,10 @@ public void UpgradeOven()
             return;
 
         if (ReputationManager.Instance.Reputation < ovenUpgradeReputationCost[_ovenLevel - 1] ||
-            GameManager.Instance.money < ovenUpgradeMoneyCost[_ovenLevel - 1])
+            GameManager.Instance.Money < ovenUpgradeMoneyCost[_ovenLevel - 1])
             return;
         
-        GameManager.Instance.money -= ovenUpgradeMoneyCost[_ovenLevel - 1];
+        GameManager.Instance.DecreaseMoney(ovenUpgradeMoneyCost[_ovenLevel - 1]);
         
         _ovenLevel++;
         currentOven.UpgradeOven(_ovenLevel);
@@ -80,10 +80,10 @@ public void UpgradeOven()
             return;
         
         if (ReputationManager.Instance.Reputation < diningUpgradeReputationCost[_diningLevel - 1] ||
-            GameManager.Instance.money < diningUpgradeMoneyCost[_diningLevel - 1])
+            GameManager.Instance.Money < diningUpgradeMoneyCost[_diningLevel - 1])
             return;
         
-        GameManager.Instance.money -= diningUpgradeMoneyCost[_diningLevel - 1];
+        GameManager.Instance.DecreaseMoney(diningUpgradeMoneyCost[_diningLevel - 1]);
         
         _diningLevel++;
         upgradeDining?.Invoke();
@@ -109,10 +109,10 @@ public void UpgradeOven()
             return;
         
         if (ReputationManager.Instance.Reputation < interiorUpgradeReputationCost[_interiorLevel - 1] ||
-            GameManager.Instance.money < interiorUpgradeMoneyCost[_interiorLevel - 1])
+            GameManager.Instance.Money < interiorUpgradeMoneyCost[_interiorLevel - 1])
             return;
         
-        GameManager.Instance.money -= interiorUpgradeMoneyCost[_interiorLevel - 1];
+        GameManager.Instance.DecreaseMoney(interiorUpgradeMoneyCost[_interiorLevel - 1]);
         
         _interiorLevel++;
         upgradeInterior?.Invoke();
