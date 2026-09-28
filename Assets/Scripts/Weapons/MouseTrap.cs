@@ -39,6 +39,8 @@ public class MouseTrap : MonoBehaviour
 
     private IEnumerator CatchRat()
     {
+        SoundPlayer.Instance.PlaySound(SoundID.RatTrap, transform.position);
+        
         gameObject.layer = 11;
         
         caughtRat.transform.position = snapPosition.position;

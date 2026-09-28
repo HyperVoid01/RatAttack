@@ -69,8 +69,7 @@ public class PlayerInteraction : MonoBehaviour
         GameObject held = itemPickup.currentPickup;
         IThrowable throwable = held.GetComponent<IThrowable>();
         if (throwable == null) return;
-
-        Debug.Log("throwing");
+        
         itemPickup.ReleaseHeldItem();
         throwable.Throw(Camera.main.transform.forward);
     }

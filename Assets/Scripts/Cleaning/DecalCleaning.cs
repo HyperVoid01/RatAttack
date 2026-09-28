@@ -10,6 +10,8 @@ public class DecalCleaning : MonoBehaviour
     private Material[] decalMaterial;
     private Coroutine cleanUpRoutine;
     
+    private AudioSource audioSource;
+    
     public void Initialize(Material[] materials)
     {
         decalMaterial = materials;
@@ -33,7 +35,8 @@ public class DecalCleaning : MonoBehaviour
     {
         if (cleanUpRoutine != null)
             return;
-        
+
+        audioSource = SoundPlayer.Instance.PlayLoop(SoundID.Cleaning, transform.position);
         cleanUpRoutine = StartCoroutine(CleanUp());
     }
 
@@ -44,6 +47,8 @@ public class DecalCleaning : MonoBehaviour
         
         StopCoroutine(cleanUpRoutine);
         cleanUpRoutine = null;
+        
+        SoundPlayer.Instance.StopLoop(audioSource);
 
         // Snap back to full opacity
         decalProjector.fadeFactor = 1f;
@@ -61,6 +66,7 @@ public class DecalCleaning : MonoBehaviour
             yield return null;
         }
 
+        SoundPlayer.Instance.StopLoop(audioSource);
         GameManager.Instance.DirtyHands();
         decalProjector.fadeFactor = 0f;
         Destroy(gameObject);

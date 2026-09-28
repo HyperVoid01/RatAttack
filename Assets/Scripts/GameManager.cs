@@ -38,6 +38,8 @@ public class GameManager : MonoBehaviour
     
     public void IncreaseMoney(int amount)
     {
+        SoundPlayer.Instance.PlaySound(SoundID.ReceiveMoney, transform.position);
+        
         money += amount;
     }
 

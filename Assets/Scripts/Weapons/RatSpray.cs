@@ -11,6 +11,7 @@ public class RatSpray : MonoBehaviour, IHoldInteraction
     [SerializeField] private LayerMask layerMask;
 
     private Coroutine sprayRoutine;
+    private AudioSource audioSource;
 
     public bool IsSpraying => sprayRoutine != null;
 
@@ -23,6 +24,7 @@ public class RatSpray : MonoBehaviour, IHoldInteraction
             return; // already spraying, don't stack coroutines
 
         sprayRoutine = StartCoroutine(Spray());
+        audioSource = SoundPlayer.Instance.PlayLoop(SoundID.RatSpray, transform);
     }
 
     public void StopSpray()
@@ -30,6 +32,7 @@ public class RatSpray : MonoBehaviour, IHoldInteraction
         if (sprayRoutine == null)
             return;
 
+        SoundPlayer.Instance.StopLoop(audioSource);
         StopCoroutine(sprayRoutine);
         sprayRoutine = null;
 

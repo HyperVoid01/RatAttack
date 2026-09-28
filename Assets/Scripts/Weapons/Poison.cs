@@ -45,6 +45,8 @@ public class Poison : MonoBehaviour, IThrowable
     {
         if (isThrown && collision.gameObject.isStatic)
         {
+            SoundPlayer.Instance.PlaySound(SoundID.PoisonBottleShatter, transform.position);
+            
             rb.isKinematic = true;
             mesh.SetActive(false);
             boxCollider.enabled = false;

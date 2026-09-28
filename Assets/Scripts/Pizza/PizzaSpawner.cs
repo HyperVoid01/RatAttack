@@ -23,6 +23,8 @@ public class PizzaSpawner : MonoBehaviour
 
     private IEnumerator SpawnPizza()
     {
+        SoundPlayer.Instance.PlaySound(SoundID.PizzaBaseSpawn, transform.position);
+        
         yield return new WaitForSeconds(pizzaSpawnRate);
         pizza = Instantiate(pizzaPrefab, pizzaSpawnPoint);
         spawnRoutine = null;

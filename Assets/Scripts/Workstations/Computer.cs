@@ -49,6 +49,7 @@ public class Computer : MonoBehaviour
 
     public void Exit()
     {
+        SoundPlayer.Instance.PlaySound(SoundID.ComputerButtonClick, transform.position);
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         HUDManager.Instance.SetAllInActive();
@@ -110,18 +111,24 @@ public class Computer : MonoBehaviour
 
     public void OpenPestControlMenu()
     {
+        SoundPlayer.Instance.PlaySound(SoundID.ComputerButtonClick, transform.position);
+        
         pestControlMenu.SetActive(true);
         upgradesMenu.SetActive(false);
     }
 
     public void OpenUpgradesMenu()
     {
+        SoundPlayer.Instance.PlaySound(SoundID.ComputerButtonClick, transform.position);
+        
         upgradesMenu.SetActive(true);
         pestControlMenu.SetActive(false);
     }
 
     public void BackToHomeScreen()
     {
+        SoundPlayer.Instance.PlaySound(SoundID.ComputerButtonClick, transform.position);
+        
         upgradesMenu.SetActive(false);
         pestControlMenu.SetActive(false);
     }
@@ -130,9 +137,15 @@ public class Computer : MonoBehaviour
     {
         if (GameManager.Instance.Money >= purchaseItems[itemIndex].price)
         {
+            SoundPlayer.Instance.PlaySound(SoundID.PurchaseSuccessful, transform.position);
+            
             GameManager.Instance.DecreaseMoney(purchaseItems[itemIndex].price);
             Instantiate(purchaseItems[itemIndex].prefab, spawnPoint.position, Quaternion.identity);
             UpdateUI();
+        }
+        else
+        {
+            SoundPlayer.Instance.PlaySound(SoundID.PurchaseFailed, transform.position);
         }
     }
 }

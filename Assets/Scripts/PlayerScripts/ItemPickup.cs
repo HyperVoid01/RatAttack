@@ -52,6 +52,8 @@ public class ItemPickup : MonoBehaviour
 
         if (!blockGrabUntilMouseRelease && Input.GetMouseButton(0) && Physics.SphereCast(playerCamera.transform.position, radius, playerCamera.transform.forward, out RaycastHit hit, range, layer) && !currentPickup)
         {
+            SoundPlayer.Instance.PlaySound(SoundID.GrabItem, transform.position);
+            
             currentPickup = hit.collider.gameObject;
             currentPickupRb = currentPickup.GetComponent<Rigidbody>();
             currentHoldDistance = Vector3.Distance(playerCamera.transform.position, currentPickup.transform.position);

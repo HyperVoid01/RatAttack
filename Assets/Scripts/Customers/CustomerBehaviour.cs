@@ -7,12 +7,14 @@ public class CustomerBehaviour : MonoBehaviour
 {
     [SerializeField] private CustomerData data;
     [SerializeField] private LayerMask ratLayer;
+    [SerializeField] private bool checkForRats;
     
     private int ratSightingMeter = 0;
     private Flavour order;
     public bool orderTaken;
     public bool inLine;
     public bool joinedQueue;
+    private AudioSource audioSource;
 
     public Flavour Order => order;
     public Interactable interactable;
@@ -22,7 +24,9 @@ public class CustomerBehaviour : MonoBehaviour
     {
         interactable = GetComponent<Interactable>();
         movement = GetComponent<CustomerMovement>();
-        //StartCoroutine(CheckForRats());
+        
+        if (checkForRats)
+            StartCoroutine(CheckForRats());
     }
 
     private void Start()
@@ -107,8 +111,10 @@ public class CustomerBehaviour : MonoBehaviour
 
     public IEnumerator EatPizza(GameObject pizza)
     {
+        audioSource = SoundPlayer.Instance.PlayLoop(SoundID.Eating, transform.position);
         yield return new WaitForSeconds(data.eatTime);
         Destroy(pizza);
+        SoundPlayer.Instance.StopLoop(audioSource);
         
         yield return new WaitForSeconds(0.5f);
         StartCoroutine(movement.Leave());
@@ -135,6 +141,10 @@ public class CustomerBehaviour : MonoBehaviour
             if (ratSightingMeter >= data.ratTolerance)
             {
                 Debug.Log("Customer saw a rat!");
+                
+                if (audioSource != null)
+                    SoundPlayer.Instance.StopLoop(audioSource);
+                
                 StartCoroutine(movement.Leave());
                 yield break;
             }

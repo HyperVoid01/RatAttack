@@ -45,6 +45,8 @@ public class PickupStation : MonoBehaviour
 
     public void CallCustomer()
     {
+        SoundPlayer.Instance.PlaySound(SoundID.BellRing, transform.position);
+        
         if (!currentPizzaObject || waitingCustomers.Count == 0)
             return;
         

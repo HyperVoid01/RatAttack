@@ -42,18 +42,21 @@ public class IngredientStation : MonoBehaviour
             case Flavour.Plain:
             {
                 currentPizza.ChangeFlavor(Flavour.Pepperoni);
+                SoundPlayer.Instance.PlaySound(SoundID.AddToppings, transform.position);
                 break;
             }
 
             case Flavour.Onion:
             {
                 currentPizza.ChangeFlavor(Flavour.PepperoniAndOnions);
+                SoundPlayer.Instance.PlaySound(SoundID.AddToppings, transform.position);
                 break;
             }
 
             case Flavour.Veg:
             {
                 currentPizza.ChangeFlavor(Flavour.PepperoniAndVeg);
+                SoundPlayer.Instance.PlaySound(SoundID.AddToppings, transform.position);
                 break;
             }
             
@@ -70,18 +73,21 @@ public class IngredientStation : MonoBehaviour
             case Flavour.Plain:
             {
                 currentPizza.ChangeFlavor(Flavour.Onion);
+                SoundPlayer.Instance.PlaySound(SoundID.AddToppings, transform.position);
                 break;
             }
             
             case Flavour.Pepperoni:
             {
                 currentPizza.ChangeFlavor(Flavour.PepperoniAndOnions);
+                SoundPlayer.Instance.PlaySound(SoundID.AddToppings, transform.position);
                 break;
             }
             
             case Flavour.Veg:
             {
                 currentPizza.ChangeFlavor(Flavour.OnionAndVeg);
+                SoundPlayer.Instance.PlaySound(SoundID.AddToppings, transform.position);
                 break;
             }
         }
@@ -97,18 +103,21 @@ public class IngredientStation : MonoBehaviour
             case Flavour.Plain:
             {
                 currentPizza.ChangeFlavor(Flavour.Veg);
+                SoundPlayer.Instance.PlaySound(SoundID.AddToppings, transform.position);
                 break;
             }
             
             case Flavour.Pepperoni:
             {
                 currentPizza.ChangeFlavor(Flavour.PepperoniAndVeg);
+                SoundPlayer.Instance.PlaySound(SoundID.AddToppings, transform.position);
                 break;
             }
             
             case Flavour.Onion:
             {
                 currentPizza.ChangeFlavor(Flavour.OnionAndVeg);
+                SoundPlayer.Instance.PlaySound(SoundID.AddToppings, transform.position);
                 break;
             }
         }

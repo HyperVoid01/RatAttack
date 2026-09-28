@@ -7,6 +7,7 @@ public class AmmoBox : MonoBehaviour
     
     public void LoadAmmo()
     {
+        SoundPlayer.Instance.PlaySound(SoundID.ShotgunReload, transform.position);
         GameManager.Instance.IncreaseAmmo(ammoAmount);
         Destroy(gameObject);
     }

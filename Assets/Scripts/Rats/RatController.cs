@@ -10,7 +10,10 @@ public class RatController : MonoBehaviour, ITargetable
     [SerializeField] private GameObject aliveMesh;
     [SerializeField] private GameObject deadMesh;
     [SerializeField] private Material[] bloodDecalMaterials;
-    [SerializeField] private GameObject bloodDecalPrefab;
+    [SerializeField] private Material[] dirtDecalMaterials;
+    [Range(0f, 1f)] [SerializeField] private float dirtDecalIntensity;
+    [SerializeField] private int maxDirtDecals;
+    [SerializeField] private GameObject decalPrefab;
     
     public Collider boxCollider;
     
@@ -23,6 +26,9 @@ public class RatController : MonoBehaviour, ITargetable
     private bool isWaiting;
     private bool isFleeing;
     private bool isChasingPizza; // true from the moment a pizza is spotted until it's grabbed/lost
+    private int decalCount;
+    private AudioSource eatingAudioSource;
+    private AudioSource noiseAudioSource;
 
     // Cleanup
     private Coroutine cleanUpRoutine;
@@ -37,6 +43,8 @@ public class RatController : MonoBehaviour, ITargetable
         currentHealth = data.maxHealth;
 
         StartCoroutine(HuntPizzas());
+        
+        noiseAudioSource = SoundPlayer.Instance.PlayLoop(SoundID.RatNoise, transform);
     }
 
     private void Update()
@@ -73,6 +81,7 @@ public class RatController : MonoBehaviour, ITargetable
             {
                 isWaiting = true;
                 idleTimer = Random.Range(data.minIdleTime, data.maxIdleTime);
+                SpawnDirtDecal();
             }
             else
             {
@@ -138,6 +147,8 @@ public class RatController : MonoBehaviour, ITargetable
             pizzaRb.interpolation = RigidbodyInterpolation.None;
         }
 
+        SoundPlayer.Instance.PlaySound(SoundID.RatSteal, transform.position);
+        
         pizza.transform.SetParent(pizzaSlot);
         pizza.transform.localPosition = Vector3.zero;
         pizza.transform.localRotation = Quaternion.identity;
@@ -147,7 +158,11 @@ public class RatController : MonoBehaviour, ITargetable
 
     private IEnumerator EatPizza()
     {
+        eatingAudioSource = SoundPlayer.Instance.PlayLoop(SoundID.Eating, transform);
+        
         yield return new WaitForSeconds(data.eatDuration);
+        
+        SoundPlayer.Instance.StopLoop(eatingAudioSource);
 
         if (currentPizza)
         {
@@ -237,10 +252,17 @@ public class RatController : MonoBehaviour, ITargetable
 
     public void TakeDamage(int damage)
     {
+        if (currentHealth == 0)
+            return;
+        
         currentHealth = Mathf.Clamp(currentHealth - damage, 0, data.maxHealth);
 
         if (currentHealth <= 0)
         {
+            SoundPlayer.Instance.StopLoop(noiseAudioSource);
+            SoundPlayer.Instance.StopLoop(eatingAudioSource);
+            SoundPlayer.Instance.PlaySound(SoundID.RatDeath, transform.position);
+            
             StopAllCoroutines();
 
             // Drop whatever pizza it was carrying instead of destroying it with the rat
@@ -263,19 +285,34 @@ public class RatController : MonoBehaviour, ITargetable
             GetComponent<Collider>().enabled = false;
             aliveMesh.SetActive(false);
             deadMesh.SetActive(true);
-            SpawnDecal();
+            SpawnBloodDecal();
         }
     }
 
-    private void SpawnDecal()
+    private void SpawnBloodDecal()
     {
         float x = Random.value * 1.5f;
         float z = Random.value * 1.5f;
         
-        Vector3 position = transform.position + new Vector3(x, 0, z);
+        Vector3 position = transform.position + new Vector3(x, -0.4f, z);
         
-        DecalCleaning decal = Instantiate(bloodDecalPrefab, position, Quaternion.identity).GetComponent<DecalCleaning>();
+        DecalCleaning decal = Instantiate(decalPrefab, position, Quaternion.identity).GetComponent<DecalCleaning>();
         decal.Initialize(bloodDecalMaterials);
+    }
+    
+    private void SpawnDirtDecal()
+    {
+        if (Random.value > dirtDecalIntensity || decalCount >= maxDirtDecals)
+            return;
+        
+        float x = Random.value * 1.5f;
+        float z = Random.value * 1.5f;
+        
+        Vector3 position = transform.position + new Vector3(x, -0.4f, z);
+        
+        DecalCleaning decal = Instantiate(decalPrefab, position, Quaternion.identity).GetComponent<DecalCleaning>();
+        decal.Initialize(dirtDecalMaterials);
+        decalCount++;
     }
 
     public void Heal(int healing)

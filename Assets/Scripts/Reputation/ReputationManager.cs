@@ -41,6 +41,8 @@ public class ReputationManager : MonoBehaviour
 
         if (Reputation >= starRatingThresholds[starRating])
         {
+            SoundPlayer.Instance.PlaySound(SoundID.StarRatingIncrease, transform.position);
+            
             starRating++;
             HUDManager.Instance.UpdateStarRating();
         }
@@ -50,11 +52,13 @@ public class ReputationManager : MonoBehaviour
     {
         Reputation = Mathf.Clamp(Reputation - amount, 0f, 100);
 
-        if (starRating > 0)
+        if (starRating == 0)
             return;
         
         if (Reputation < starRatingThresholds[starRating - 1])
         {
+            SoundPlayer.Instance.PlaySound(SoundID.StarRatingDecrease, transform.position);
+            
             starRating--;
             HUDManager.Instance.UpdateStarRating();
         }

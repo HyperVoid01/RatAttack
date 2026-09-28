@@ -118,6 +118,8 @@ public class HUDManager : MonoBehaviour
         details.transform.SetParent(orderTextRoot, false);
         details.text = text;
         
+        SoundPlayer.Instance.PlaySound(SoundID.WritingInNotepad, transform.position);
+        
         customerOrders.Add(customer, detailsObject);
     }
 

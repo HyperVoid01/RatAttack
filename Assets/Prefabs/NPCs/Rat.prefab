@@ -283,7 +283,13 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 8ec74d828b456f541a435e829a2196f1, type: 2}
   - {fileID: 2100000, guid: a303aa8270a089948b14db6316b2f460, type: 2}
   - {fileID: 2100000, guid: 312a574403e2f3d4a8a441a414c66d74, type: 2}
-  bloodDecalPrefab: {fileID: 8185457477977874172, guid: b7eedbcc9da9d87468a1b05720dc72d4, type: 3}
+  dirtDecalMaterials:
+  - {fileID: 2100000, guid: f70fc5ae451e5cc4badd8c992c1369e2, type: 2}
+  - {fileID: 2100000, guid: b2eccb265332875439533dbb3b60620d, type: 2}
+  - {fileID: 2100000, guid: 5c0c866c5f872c24fb46900a69e2bed3, type: 2}
+  dirtDecalIntensity: 0.1
+  maxDirtDecals: 3
+  decalPrefab: {fileID: 8185457477977874172, guid: b7eedbcc9da9d87468a1b05720dc72d4, type: 3}
   boxCollider: {fileID: 0}
   player: {fileID: 0}
 --- !u!1 &4844201455834368446

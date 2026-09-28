@@ -5,6 +5,7 @@ public class CustomerSpawner : MonoBehaviour
 {
     [Header("Spawn Settings")]
     [SerializeField] private Vector2 spawnInterval; // Time between wave spawns
+    [SerializeField] private float inspectorSpawnInterval;
     [SerializeField] private Vector2Int spawnAmount; // Amount of customers in wave
     [SerializeField] private Vector2 spawnRate; // Time between customer spawns in a wave
     [SerializeField] private float spawnAmountMultiplier; // Increase of customers
@@ -14,6 +15,7 @@ public class CustomerSpawner : MonoBehaviour
     
     [Header("Customer Mesh")]
     [SerializeField] private GameObject customerPrefab;
+    [SerializeField] private GameObject inspectorPrefab;
 
     public int customerCount;
     private bool waveSpawned;
@@ -33,6 +35,7 @@ public class CustomerSpawner : MonoBehaviour
     private void Start()
     {
         StartCoroutine(SpawnCycle());
+        StartCoroutine(SpawnInspector());
     }
 
     private IEnumerator SpawnCustomers()
@@ -73,6 +76,24 @@ public class CustomerSpawner : MonoBehaviour
         
             // Wait for interval
             yield return new WaitForSeconds(Random.Range(spawnInterval.x, spawnInterval.y));
+        }
+    }
+
+    private IEnumerator SpawnInspector()
+    {
+        GameObject inspector = null;
+        
+        while (true)
+        {
+            yield return new WaitForSeconds(inspectorSpawnInterval);
+            
+            if (inspector != null)
+            {
+                yield return null; // wait a frame, then check again
+                continue;
+            }
+
+            inspector = Instantiate(inspectorPrefab, spawnPoint.transform.position, Quaternion.identity);
         }
     }
 }

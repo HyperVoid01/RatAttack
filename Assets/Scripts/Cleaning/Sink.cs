@@ -7,6 +7,8 @@ public class Sink : MonoBehaviour
     [SerializeField] private ParticleSystem soapParticles;
     
     private Coroutine cleanRoutine;
+    
+    private AudioSource audioSource;
 
     public void StartCleaningHands()
     {
@@ -14,6 +16,7 @@ public class Sink : MonoBehaviour
             return;
         
         cleanRoutine = StartCoroutine(CleanHands());
+        audioSource = SoundPlayer.Instance.PlayLoop(SoundID.WashingHands, transform.position);
     }
 
     public void StopCleaningHands()
@@ -24,6 +27,7 @@ public class Sink : MonoBehaviour
         StopCoroutine(cleanRoutine);
         cleanRoutine = null;
         soapParticles.Stop();
+        SoundPlayer.Instance.StopLoop(audioSource);
     }
 
     private IEnumerator CleanHands()
@@ -32,5 +36,6 @@ public class Sink : MonoBehaviour
         yield return new WaitForSeconds(cleanDuration);
         GameManager.Instance.CleanHands();
         soapParticles.Stop();
+        SoundPlayer.Instance.StopLoop(audioSource);
     }
 }

@@ -29,6 +29,8 @@ public class Shotgun : MonoBehaviour
 
         nextFireTime = Time.time + (1f / fireRate);
 
+        SoundPlayer.Instance.PlaySound(SoundID.ShotgunFire, transform.position);
+        
         sprayParticle.Play();
         RaycastHit[] hit = Physics.CapsuleCastAll(transform.position, transform.position + transform.forward * range, radius, transform.position + transform.forward, range,
             layerMask);

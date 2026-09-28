@@ -58,6 +58,8 @@ public void UpgradeOven()
         
         _ovenLevel++;
         currentOven.UpgradeOven(_ovenLevel);
+        
+        SoundPlayer.Instance.PlaySound(SoundID.PurchaseSuccessful, transform.position);
     }
 
     public float[] GetDiningCosts()
@@ -87,6 +89,8 @@ public void UpgradeOven()
         
         _diningLevel++;
         upgradeDining?.Invoke();
+        
+        SoundPlayer.Instance.PlaySound(SoundID.PurchaseSuccessful, transform.position);
     }
     
     public float[] GetInteriorCosts()
@@ -116,5 +120,12 @@ public void UpgradeOven()
         
         _interiorLevel++;
         upgradeInterior?.Invoke();
+
+        if (_interiorLevel == 2)
+        {
+            EnvironmentalEffects.Instance.ClearDust();
+        }
+        
+        SoundPlayer.Instance.PlaySound(SoundID.PurchaseSuccessful, transform.position);
     }
 }
