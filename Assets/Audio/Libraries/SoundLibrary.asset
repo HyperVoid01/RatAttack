@@ -77,4 +77,6 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: e23aaa48e7fcffd47948939fc3e0d1c7, type: 3}
   - id: 31
     clip: {fileID: 8300000, guid: 9d8c7e06014ad5b48a0ccf1b2fad11f5, type: 3}
-  music: []
+  music:
+  - id: 0
+    clip: {fileID: 8300000, guid: 9e3d67cb0e7418140b97d8d104453ca7, type: 3}
