@@ -305,8 +305,8 @@ public class RatController : MonoBehaviour, ITargetable
         if (Random.value > dirtDecalIntensity || decalCount >= maxDirtDecals)
             return;
         
-        float x = Random.value * 1.5f;
-        float z = Random.value * 1.5f;
+        float x = Random.Range(-1.5f, 1.5f);
+        float z = Random.Range(-1.5f, 1.5f);
         
         Vector3 position = transform.position + new Vector3(x, -0.4f, z);
         

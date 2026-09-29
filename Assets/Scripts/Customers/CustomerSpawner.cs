@@ -32,7 +32,7 @@ public class CustomerSpawner : MonoBehaviour
         Instance = this;
     }
     
-    private void Start()
+    public void Initialize()
     {
         StartCoroutine(SpawnCycle());
         StartCoroutine(SpawnInspector());

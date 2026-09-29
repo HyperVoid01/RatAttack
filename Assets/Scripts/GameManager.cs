@@ -5,6 +5,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int money = 100;
     [SerializeField] private int ammo = 10;
     [SerializeField] private bool areHandsClean = true;
+    private bool _gameStarted = false;
     
     public int Ammo => ammo;
     public int Money => money;
@@ -22,6 +23,16 @@ public class GameManager : MonoBehaviour
         }
 
         Instance = this;
+    }
+
+    public void StartGame()
+    {
+        if (_gameStarted)
+            return;
+        
+        _gameStarted = true;
+        CustomerSpawner.Instance.Initialize();
+        RatSpawner.Instance.Initialize();
     }
 
     public void IncreaseAmmo(int amount)

@@ -14,9 +14,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speakerName: Old Manager
   sentences:
-  - Hello there kind sir!
-  - I am the manager of this fine establishment.
-  - I am getting too old for this job now, and this establishment is getting quite
-    run down.
-  - The health inspector came by the other day, and he did not give us a good review.
-  - I mean... just look at the rats roaming around.
+  - Ahem... hello! You made it.
+  - Let me show you the ropes of pizza-making!
+  - First things first. This is the counter, were you will take the customers orders.
+  - Customers will come up to the counter to order their pizzas. Press 'E' to interact
+    with them and take their order.
+  - Look at the icon by the customers head to see what kind of pizza they ordered.
+  - You will also automatically take their order down on your orders notepad.
+  - To start, Pick up a pizza base and place it in the preparation area. Then, place
+    the ingredients the customer ordered on top of the pizza base.
+  - Once you've done that, you can pick up the prepared pizza and place it inside
+    the oven.
+  - Once your pizza is done cooking, you can take it out the oven. Be careful not
+    to burn it!
+  - Then, place the completed pizza on the counter for the customer to pick it up.
+  - If you ever forget how to make pizzas, just look at the tutorial poster on the
+    wall for a reminder!
+  - This is the restaurant computer where you can purchase upgrades and items.
+  - The 'RatAway' website has all the rat repellents you need!
+  - Err... the rats. Right. That brings me to my next point..
+  - You'll notice that as you run your restaurant, rats will sometimes appear.
+  - In order to dispose of them, you should use tools you can purchase from the 'RatAway'
+    website.
+  - If too many rats infest the restaurant and create dirt, customers will start
+    noticing, and your restaurant rating will go down.
+  - Your restaurants reputation is ranked with stars. Currently it's at 0 stars,
+    but I believe you can achieve a 5 star restaurant some day!
+  - Make sure to serve customers the correct order quickly, and keep the restaurant
+    clean and maintained. You'll get there in no time!
+  - Every now and then, the inspector will come to your restaurant to check its cleanliness.
+    If you haven't been taking care of the rats, he will notice!

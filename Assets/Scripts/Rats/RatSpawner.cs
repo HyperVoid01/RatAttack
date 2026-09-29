@@ -33,7 +33,7 @@ public class RatSpawner : MonoBehaviour
         Instance = this;
     }
     
-    private void Start()
+    public void Initialize()
     {
         StartCoroutine(SpawnCycle());
     }

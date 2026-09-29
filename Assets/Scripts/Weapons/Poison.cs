@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 [RequireComponent(typeof(SphereCollider))]
 public class Poison : MonoBehaviour, IThrowable
@@ -12,7 +13,8 @@ public class Poison : MonoBehaviour, IThrowable
     [SerializeField] private LayerMask layerMask;
     [SerializeField] private float throwForce = 15f;
 
-    [Header("References")]
+    [Header("References")] 
+    [SerializeField] private DecalProjector[] poisonSplatters;
     [SerializeField] private GameObject mesh;
     [SerializeField] private BoxCollider boxCollider;
     [SerializeField] private SphereCollider sphereCollider;
@@ -41,6 +43,38 @@ public class Poison : MonoBehaviour, IThrowable
         }
     }
 
+    private void EnableDecals()
+    {
+        foreach (var decal in poisonSplatters)
+        {
+            decal.gameObject.SetActive(true);
+            
+            float x = Random.Range(-3f, 3f);
+            float z = Random.Range(-3f, 3f);
+        
+            Vector3 position = transform.position + new Vector3(x, 0.1f, z);
+            
+            decal.gameObject.transform.position = position;
+        }
+    }
+
+    private IEnumerator FadeDecals()
+    {
+        float elapsedTime = 0;
+        
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            
+            foreach (var decal in poisonSplatters)
+            {
+                decal.fadeFactor = Mathf.Lerp(1f, 0f, elapsedTime / duration);
+            }
+            
+            yield return null;
+        }
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
         if (isThrown && collision.gameObject.isStatic)
@@ -57,6 +91,9 @@ public class Poison : MonoBehaviour, IThrowable
             transform.position = collision.contacts[0].point;
             StartCoroutine(EndAfterDuration());
             particles.Play();
+            
+            EnableDecals();
+            StartCoroutine(FadeDecals());
         }
     }
 

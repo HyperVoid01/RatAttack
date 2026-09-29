@@ -23,13 +23,13 @@ public class Computer : MonoBehaviour
     
     [Header("Descriptions")]
     [SerializeField] private TMP_Text ovenCostText;
-    [SerializeField] private Slider ovenLevelSlider;
+    [SerializeField] private TMP_Text ovenLevelText;
     
     [SerializeField] private TMP_Text diningCostText;
-    [SerializeField] private Slider diningLevelSlider;
+    [SerializeField] private TMP_Text diningLevelText;
     
     [SerializeField] private TMP_Text interiorCostText;
-    [SerializeField] private Slider interiorLevelSlider;
+    [SerializeField] private TMP_Text interiorLevelText;
     
     public void UseComputer()
     {
@@ -65,9 +65,9 @@ public class Computer : MonoBehaviour
 
     public void UpdateUI()
     {
-        balance.text = "Balance: R" + GameManager.Instance.Money;
+        balance.text = "R" + GameManager.Instance.Money;
         float percentage = ReputationManager.Instance.GetPercentageToNextRating();
-        starRating.text = (ReputationManager.Instance.starRating + percentage).ToString();
+        starRating.text = (ReputationManager.Instance.starRating + percentage).ToString("F1");
         starProgressionSlider.value = 1 - percentage;
         
         UpdateCostsUI();
@@ -78,8 +78,8 @@ public class Computer : MonoBehaviour
         float[] ovenCosts = UpgradeManager.Instance.GetOvenCosts();
         if (ovenCosts != null)
         {
-            ovenCostText.text = $"R{ovenCosts[1]}\nREP:{ovenCosts[0]}";
-            ovenLevelSlider.value = UpgradeManager.Instance._ovenLevel;
+            ovenCostText.text = $"R{ovenCosts[1]} || {ovenCosts[0]} stars";
+            ovenLevelText.text = (UpgradeManager.Instance._ovenLevel).ToString();
         }
         else
         {
@@ -89,8 +89,8 @@ public class Computer : MonoBehaviour
         float[] diningCosts = UpgradeManager.Instance.GetDiningCosts();
         if (diningCosts != null)
         {
-            diningCostText.text = $"R{diningCosts[1]}\nREP:{diningCosts[0]}";
-            diningLevelSlider.value = UpgradeManager.Instance._diningLevel;
+            diningCostText.text = $"R{diningCosts[1]} || {diningCosts[0]} stars";
+            diningLevelText.text = (UpgradeManager.Instance._diningLevel).ToString();
         }
         else
         {
@@ -100,8 +100,8 @@ public class Computer : MonoBehaviour
         float[] interiorCosts = UpgradeManager.Instance.GetInteriorCosts();
         if (interiorCosts != null)
         {
-            interiorCostText.text = $"R{interiorCosts[1]}\nREP:{interiorCosts[0]}";
-            interiorLevelSlider.value = UpgradeManager.Instance._interiorLevel;
+            interiorCostText.text = $"R{interiorCosts[1]} || {interiorCosts[0]} stars";
+            interiorLevelText.text = (UpgradeManager.Instance._interiorLevel).ToString();
         }
         else
         {
