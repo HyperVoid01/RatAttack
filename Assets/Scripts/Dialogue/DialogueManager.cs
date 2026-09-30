@@ -63,6 +63,10 @@ public class DialogueManager : MonoBehaviour
 
         string sentence = sentences.Dequeue();
         dialogueTextBox.text = sentence;
+        
+        if (sentence == "")
+            EndDialogue();
+        
         return true;
     }
 

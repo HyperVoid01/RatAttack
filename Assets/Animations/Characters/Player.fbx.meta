@@ -151,7 +151,7 @@ ModelImporter:
       takeName: rig_chef|rig_chefAction
       internalID: -5423141485074110727
       firstFrame: 79
-      lastFrame: 79
+      lastFrame: 79.1
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -209,7 +209,7 @@ ModelImporter:
       takeName: rig_chef|rig_chefAction
       internalID: -1954016351926591989
       firstFrame: 88
-      lastFrame: 88
+      lastFrame: 88.1
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -295,7 +295,7 @@ ModelImporter:
       name: Pointing
       takeName: rig_chef|rig_chefAction
       internalID: 1811066912022858261
-      firstFrame: 192
+      firstFrame: 191
       lastFrame: 192
       wrapMode: 0
       orientationOffsetY: 0

@@ -19,11 +19,14 @@ public class MainMenuManager : MonoBehaviour
 
     public void OnClickPlay()
     {
+        SoundPlayer.Instance.PlaySound(SoundID.ButtonClick, transform.position);
         SceneManager.LoadScene(1);
     }
     
     public void OnClickSettings()
     {
+        SoundPlayer.Instance.PlaySound(SoundID.ButtonClick, transform.position);
+        
         mainMenuUI.SetActive(false);
         settingsUI.SetActive(true);
 
@@ -36,6 +39,8 @@ public class MainMenuManager : MonoBehaviour
 
     public void OnClickBack()
     {
+        SoundPlayer.Instance.PlaySound(SoundID.ButtonClick, transform.position);
+        
         settingsUI.SetActive(false);
         
         StartCoroutine(PanCamera(settingsCameraPosition.position, settingsCameraPosition.rotation,
@@ -47,6 +52,8 @@ public class MainMenuManager : MonoBehaviour
 
     public void OnClickExit()
     {
+        SoundPlayer.Instance.PlaySound(SoundID.ButtonClick, transform.position);
+        
         Application.Quit();
     }
     

@@ -39,9 +39,7 @@ public enum SoundID
 public enum MusicID
 {
     MainMenu,
-    Gameplay,
-    BossBattle,
-    GameOver
+    Gameplay
 }
 
 [CreateAssetMenu(fileName = "SoundLibrary", menuName = "Audio/Sound Library")]

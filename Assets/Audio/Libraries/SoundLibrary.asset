@@ -80,3 +80,5 @@ MonoBehaviour:
   music:
   - id: 0
     clip: {fileID: 8300000, guid: 9e3d67cb0e7418140b97d8d104453ca7, type: 3}
+  - id: 1
+    clip: {fileID: 8300000, guid: d0099c5e04c3ded4e9605746e9bb5705, type: 3}
