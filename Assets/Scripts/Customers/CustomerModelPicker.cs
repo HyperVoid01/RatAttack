@@ -5,6 +5,8 @@ using UnityEngine;
 [DefaultExecutionOrder(-100)]
 public class CustomerModelPicker : MonoBehaviour
 {
+    [SerializeField] private bool isInspector;
+    [SerializeField] private GameObject inspectorPrefab;
     [SerializeField] private GameObject[] modelPrefabs;
     [Tooltip("Where the model is placed. Leave empty to use this object.")]
     [SerializeField] private Transform modelParent;
@@ -13,18 +15,18 @@ public class CustomerModelPicker : MonoBehaviour
 
     private void Awake()
     {
-        if (modelPrefabs == null || modelPrefabs.Length == 0)
-        {
-            Debug.LogError($"{name}: No model prefabs assigned.");
-            return;
-        }
-
         if (modelParent == null)
         {
             modelParent = transform;
         }
 
-        GameObject prefab = modelPrefabs[Random.Range(0, modelPrefabs.Length)];
+        GameObject prefab;
+        
+        if (isInspector && inspectorPrefab != null)
+            prefab = inspectorPrefab;
+        else
+            prefab = modelPrefabs[Random.Range(0, modelPrefabs.Length)];
+        
 
         if (prefab == null)
         {
