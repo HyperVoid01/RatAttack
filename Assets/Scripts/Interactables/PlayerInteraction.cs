@@ -150,3 +150,156 @@ public class PlayerInteraction : MonoBehaviour
         }
     }
 }
+
+// using UnityEngine;
+//
+// public class PlayerInteraction : MonoBehaviour
+// {
+//     public float playerReach;
+//     public Interactable currentInteractable;
+//
+//     [Tooltip("Set this to only the layer(s) your Interactable colliders live on. " +
+//              "Exclude visual-only model meshes so their mesh colliders can't block the raycast.")]
+//     public LayerMask interactionLayerMask = ~0; // defaults to Everything until you set it in the Inspector
+//
+//     [Header("Held Items")]
+//     [Tooltip("Reference to the pickup script so we know what's currently held.")]
+//     [SerializeField] private ItemPickup itemPickup;
+//     [Tooltip("Kept separate from ItemPickup's Mouse0 (used to carry/hold items).")]
+//     public KeyCode itemHoldKey = KeyCode.Mouse1;
+//     public KeyCode interactKey = KeyCode.E;
+//
+//     // Bindings own their own start/stop/force-stop bookkeeping - add more here
+//     // for future hold-based features without touching Update().
+//     private HoldInputBinding lookHold;
+//     private HoldInputBinding itemHold;
+//
+//     public bool isActive = true;
+//
+//     private void Awake()
+//     {
+//         lookHold = new HoldInputBinding(interactKey, () => currentInteractable as IHoldInteraction);
+//         itemHold = new HoldInputBinding(itemHoldKey, ResolveHeldHoldTarget);
+//     }
+//
+//     private IHoldInteraction ResolveHeldHoldTarget()
+//     {
+//         if (itemPickup && itemPickup.currentPickup)
+//         {
+//             return itemPickup.currentPickup.GetComponent<IHoldInteraction>();
+//         }
+//
+//         return null;
+//     }
+//
+//     private void Update()
+//     {
+//         // if (!isActive)
+//         //     return;
+//
+//         CheckInteraction();
+//
+//         if (Input.GetKeyDown(interactKey) && currentInteractable)
+//             currentInteractable.Interact();
+//
+//         if (Input.GetKeyDown(interactKey))
+//             TryThrowHeldItem();
+//
+//         lookHold.Tick();
+//         itemHold.Tick();
+//     }
+//
+//     private void OnDisable()
+//     {
+//         lookHold?.ForceStop();
+//         itemHold?.ForceStop();
+//     }
+//     
+//     private void TryThrowHeldItem()
+//     {
+//         if (itemPickup == null || itemPickup.currentPickup == null) return;
+//
+//         GameObject held = itemPickup.currentPickup;
+//         IThrowable throwable = held.GetComponent<IThrowable>();
+//         if (throwable == null) return;
+//         
+//         itemPickup.ReleaseHeldItem();
+//         throwable.Throw(Camera.main.transform.forward);
+//     }
+//
+//     private void CheckInteraction()
+//     {
+//         Ray ray = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
+//         
+//         // Only hit colliders on the interaction layer(s) - visual-only model meshes
+//         // (mesh colliders added on import) won't block or steal the hit anymore.
+//         if (Physics.Raycast(ray, out RaycastHit hit, playerReach, interactionLayerMask))
+//         {
+//             Interactable newInteractable = hit.collider.GetComponent<Interactable>();
+//
+//             if (!newInteractable)
+//             {
+//                 newInteractable = hit.collider.GetComponentInChildren<Interactable>();
+//             }
+//
+//             if (!newInteractable)
+//             {
+//                 DisableCurrentInteractable();
+//                 return;
+//             }
+//
+//             // If there is a currentInteractable, and it is not the newInteractable
+//             if (currentInteractable && newInteractable != currentInteractable)
+//             {
+//                 currentInteractable.DisableOutline();
+//             }
+//
+//             if (newInteractable.enabled)
+//             {
+//                 SetNewCurrentInteractable(newInteractable);
+//             }
+//             else
+//             {
+//                 DisableCurrentInteractable();
+//             }
+//         }
+//         else // If collides with nothing
+//         {
+//             DisableCurrentInteractable();
+//         }
+//     }
+//
+//     private void SetNewCurrentInteractable(Interactable interactable)
+//     {
+//         currentInteractable = interactable;
+//         currentInteractable.EnableOutline();
+//
+//         if (currentInteractable.GetComponent<Shotgun>())
+//         {
+//             HUDManager.Instance.EnableInteractionText(currentInteractable.message, true, false);
+//         }
+//         else if (currentInteractable.GetComponent<AmmoBox>())
+//         {
+//             HUDManager.Instance.EnableInteractionText(currentInteractable.message, true, false);
+//             HUDManager.Instance.UpdateAmmoCounter(currentInteractable.GetComponent<AmmoBox>().Ammo);
+//         }
+//         else if (currentInteractable.GetComponent<Pizza>())
+//         {
+//             HUDManager.Instance.EnableInteractionText(currentInteractable.message, false, !GameManager.Instance.AreHandsClean);
+//         }
+//         else
+//         {
+//             HUDManager.Instance.EnableInteractionText(currentInteractable.message, false, false);
+//         }
+//     }
+//
+//     private void DisableCurrentInteractable()
+//     {
+//         HUDManager.Instance.DisableInteractionText();
+//         if (currentInteractable)
+//         {
+//             currentInteractable.DisableOutline();
+//             currentInteractable = null;
+//         }
+//     }
+// }

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -25,6 +26,7 @@ public class GameManager : MonoBehaviour
         Instance = this;
     }
 
+    [ContextMenu("Start")]
     public void StartGame()
     {
         if (_gameStarted)
@@ -33,6 +35,16 @@ public class GameManager : MonoBehaviour
         _gameStarted = true;
         CustomerSpawner.Instance.Initialize();
         RatSpawner.Instance.Initialize();
+    }
+
+    public void WinGame()
+    {
+        HUDManager.Instance.ShowWinScreen();
+    }
+
+    public void MainMenu()
+    {
+        SceneManager.LoadScene(0);
     }
 
     public void IncreaseAmmo(int amount)
@@ -52,11 +64,15 @@ public class GameManager : MonoBehaviour
         SoundPlayer.Instance.PlaySound(SoundID.ReceiveMoney, transform.position);
         
         money += amount;
+        
+        HUDManager.Instance.UpdateHUDMoneyCounter();
     }
 
     public void DecreaseMoney(int amount)
     {
         money = Mathf.Max(money - amount, 0);
+        
+        HUDManager.Instance.UpdateHUDMoneyCounter();
     }
 
     public void CleanHands()

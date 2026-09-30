@@ -7,7 +7,7 @@ public class CustomerBehaviour : MonoBehaviour
 {
     [SerializeField] private CustomerData data;
     [SerializeField] private LayerMask ratLayer;
-    [SerializeField] private bool checkForRats;
+    [SerializeField] public bool checkForRats;
     
     private int ratSightingMeter = 0;
     private Flavour order;
@@ -125,7 +125,17 @@ public class CustomerBehaviour : MonoBehaviour
             customerAnimator.SetEating(false);
         
         yield return new WaitForSeconds(0.5f);
-        StartCoroutine(movement.Leave());
+
+        // Already left (for example scared off by a rat mid-meal),
+        // so they already took the reputation loss and don't pay
+        if (movement.HasLeft)
+            yield break;
+
+        // Happy customer, leaving without a reputation penalty
+        StartCoroutine(movement.Leave(false));
+        
+        if (checkForRats)
+            HUDManager.Instance.ShowInspectorReview(true);
         
         GameManager.Instance.IncreaseMoney(data.payAmount);
         ReputationManager.Instance.IncreaseReputation(data.reputationIncrease);
@@ -154,6 +164,7 @@ public class CustomerBehaviour : MonoBehaviour
                     SoundPlayer.Instance.StopLoop(audioSource);
                 
                 StartCoroutine(movement.Leave());
+                HUDManager.Instance.ShowInspectorReview(false);
                 yield break;
             }
         }
@@ -183,6 +194,7 @@ public class CustomerBehaviour : MonoBehaviour
 //     public bool inLine;
 //     public bool joinedQueue;
 //     private AudioSource audioSource;
+//     private CustomerAnimator customerAnimator;
 //
 //     public Flavour Order => order;
 //     public Interactable interactable;
@@ -192,6 +204,7 @@ public class CustomerBehaviour : MonoBehaviour
 //     {
 //         interactable = GetComponent<Interactable>();
 //         movement = GetComponent<CustomerMovement>();
+//         customerAnimator = GetComponent<CustomerAnimator>();
 //         
 //         if (checkForRats)
 //             StartCoroutine(CheckForRats());
@@ -279,10 +292,16 @@ public class CustomerBehaviour : MonoBehaviour
 //
 //     public IEnumerator EatPizza(GameObject pizza)
 //     {
+//         if (customerAnimator != null)
+//             customerAnimator.SetEating(true);
+//
 //         audioSource = SoundPlayer.Instance.PlayLoop(SoundID.Eating, transform.position);
 //         yield return new WaitForSeconds(data.eatTime);
 //         Destroy(pizza);
 //         SoundPlayer.Instance.StopLoop(audioSource);
+//
+//         if (customerAnimator != null)
+//             customerAnimator.SetEating(false);
 //         
 //         yield return new WaitForSeconds(0.5f);
 //         StartCoroutine(movement.Leave());

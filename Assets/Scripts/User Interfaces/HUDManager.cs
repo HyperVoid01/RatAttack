@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -11,11 +12,18 @@ public class HUDManager : MonoBehaviour
     [Header("HUDs")]
     [SerializeField] private GameObject playerHud;
     [SerializeField] private GameObject computerUI;
+    [SerializeField] private GameObject winScreen;
     
     [Header("Customer Orders")]
     [SerializeField] private Transform orderTextRoot;
     [SerializeField] private GameObject orderDetails;
-
+    
+    [Header("Inspector")]
+    [SerializeField] private GameObject inspectorGoodText;
+    [SerializeField] private GameObject inspectorBadText;
+    [SerializeField] private float inspectorTextDuration;
+    private bool _reviewActive = false;
+    
     [Header("StarRating")] 
     [SerializeField] private Transform starRatingOrigin;   // parent transform stars live under
     [SerializeField] private GameObject starRatingImage;   // star prefab
@@ -25,6 +33,9 @@ public class HUDManager : MonoBehaviour
     [Header("Ammo")]
     [SerializeField] private GameObject ammoCounterObject;
     [SerializeField] private TextMeshProUGUI ammoCounterText;
+    
+    [Header("Money")]
+    [SerializeField] private TMP_Text moneyText;
     
     Dictionary<CustomerBehaviour, GameObject> customerOrders = new Dictionary<CustomerBehaviour, GameObject>();
 
@@ -45,6 +56,34 @@ public class HUDManager : MonoBehaviour
     {
         InitializeStarPool();
         UpdateStarRating();
+        
+        UpdateHUDMoneyCounter();
+    }
+
+    public void ShowInspectorReview(bool good)
+    {
+        if (_reviewActive)
+            return;
+        
+        StartCoroutine(ShowInspectorReviewRoutine(good));
+    }
+
+    private IEnumerator ShowInspectorReviewRoutine(bool good)
+    {
+        _reviewActive = true;
+        inspectorGoodText.SetActive(false);
+        inspectorBadText.SetActive(false);
+        
+        if (good)
+            inspectorGoodText.SetActive(true);
+        else
+            inspectorBadText.SetActive(true);
+        
+        yield return new WaitForSeconds(inspectorTextDuration);
+
+        _reviewActive = false;
+        inspectorGoodText.SetActive(false);
+        inspectorBadText.SetActive(false);
     }
 
     private void InitializeStarPool()
@@ -73,6 +112,11 @@ public class HUDManager : MonoBehaviour
     public void UpdateAmmoCounter(int ammoAddition = 0)
     {
         ammoCounterText.text = ammoAddition > 0 ? $"{GameManager.Instance.Ammo} + {ammoAddition}" : GameManager.Instance.Ammo.ToString();
+    }
+
+    public void UpdateHUDMoneyCounter()
+    {
+        moneyText.text = GameManager.Instance.Money.ToString("C");
     }
     
     public void EnableInteractionText(string text, bool showAmmoCount, bool dirtyHands)
@@ -131,6 +175,28 @@ public class HUDManager : MonoBehaviour
         GameObject oldOrder = customerOrders[customer];
         customerOrders.Remove(customer);
         Destroy(oldOrder);
+    }
+
+    public void ShowWinScreen()
+    {
+        SetAllInActive();
+        winScreen.SetActive(true);
+        Time.timeScale = 0f;
+        
+        PlayerMovement.Instance.canMove = false;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+    }
+
+    public void HideWinScreen()
+    {
+        winScreen.SetActive(false);
+        playerHud.SetActive(true);
+        Time.timeScale = 1f;
+        PlayerMovement.Instance.canMove = true;
+        
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     public void SwitchToComputer()

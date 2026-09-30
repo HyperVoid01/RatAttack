@@ -22,4 +22,4 @@ MonoBehaviour:
   pizzaDetectRadius: 1.5
   eatDuration: 10
   sizeGrowthMultiplier: 1.5
-  cleanUpDuration: 2
+  cleanUpDuration: 1

@@ -69,11 +69,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1a4bae7546dc094c9c9000a0d9d5c70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  decalMaterial:
-  - {fileID: 2100000, guid: 8ec74d828b456f541a435e829a2196f1, type: 2}
-  - {fileID: 2100000, guid: a303aa8270a089948b14db6316b2f460, type: 2}
-  - {fileID: 2100000, guid: 312a574403e2f3d4a8a441a414c66d74, type: 2}
-  cleanDuration: 2
+  cleanDuration: 1
   decalProjector: {fileID: 2761044698653047729}
 --- !u!114 &3819580754878342378
 MonoBehaviour:

@@ -2,12 +2,25 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MainMenuManager : MonoBehaviour
 {
     [Header("UI Components")]
     [SerializeField] private GameObject mainMenuUI;
     [SerializeField] private GameObject settingsUI;
+    
+    [Header("Audio Components")]
+    [SerializeField] private SettingsData settingsData;
+    
+    [SerializeField] private Slider mainVolumeUISlider;
+    [SerializeField] private PhysicalSlider mainVolumeSlider;
+    
+    [SerializeField] private Slider musicVolumeUISlider;
+    [SerializeField] private PhysicalSlider musicVolumeSlider;
+    
+    [SerializeField] private Slider sfxVolumeUISlider;
+    [SerializeField] private PhysicalSlider sfxVolumeSlider;
     
     [Header("Camera Positions")]
     [SerializeField] private Transform mainMenuCameraPosition;
@@ -16,6 +29,23 @@ public class MainMenuManager : MonoBehaviour
     [Header("Camera Movement")]
     [SerializeField] private GameObject mainCamera;
     [SerializeField] private float panDuration;
+
+    private void Start()
+    {
+        UpdateSliders();
+    }
+
+    public void UpdateSliders()
+    {
+       mainVolumeSlider.SetValue(mainVolumeUISlider.value); 
+       settingsData.mainVolume = mainVolumeUISlider.value;
+       
+       musicVolumeSlider.SetValue(musicVolumeUISlider.value);
+       settingsData.musicVolume = musicVolumeUISlider.value;
+       
+       sfxVolumeSlider.SetValue(sfxVolumeUISlider.value);
+       settingsData.sfxVolume = sfxVolumeUISlider.value;
+    }
 
     public void OnClickPlay()
     {
