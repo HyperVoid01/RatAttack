@@ -12,6 +12,7 @@ public class Poison : MonoBehaviour, IThrowable
     [SerializeField] private float duration;
     [SerializeField] private LayerMask layerMask;
     [SerializeField] private float throwForce = 15f;
+    [SerializeField] private LayerMask groundMask;
 
     [Header("References")] 
     [SerializeField] private DecalProjector[] poisonSplatters;
@@ -29,6 +30,20 @@ public class Poison : MonoBehaviour, IThrowable
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
+    }
+
+    public void Throw()
+    {
+        Vector3 direction = Camera.main.transform.forward;
+            
+        rb.useGravity = true;
+        rb.linearVelocity = direction.normalized * throwForce;
+        isThrown = true;
+
+        if (TryGetComponent(out Interactable interactable))
+        {
+            interactable.enabled = false;
+        }
     }
 
     public void Throw(Vector3 direction)
@@ -77,24 +92,24 @@ public class Poison : MonoBehaviour, IThrowable
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (isThrown && collision.gameObject.isStatic)
-        {
-            SoundPlayer.Instance.PlaySound(SoundID.PoisonBottleShatter, transform.position);
+        if (!isThrown || isActive) return;
+        if ((groundMask.value & (1 << collision.gameObject.layer)) == 0) return;
+        
+        SoundPlayer.Instance.PlaySound(SoundID.PoisonBottleShatter, transform.position);
             
-            rb.isKinematic = true;
-            mesh.SetActive(false);
-            boxCollider.enabled = false;
-            sphereCollider.enabled = true;
+        rb.isKinematic = true;
+        mesh.SetActive(false);
+        boxCollider.enabled = false;
+        sphereCollider.enabled = true;
 
-            isActive = true;
-            transform.rotation = Quaternion.Euler(0,0,0);
-            transform.position = collision.contacts[0].point;
-            StartCoroutine(EndAfterDuration());
-            particles.Play();
+        isActive = true;
+        transform.rotation = Quaternion.Euler(0,0,0);
+        transform.position = collision.contacts[0].point;
+        StartCoroutine(EndAfterDuration());
+        particles.Play();
             
-            EnableDecals();
-            StartCoroutine(FadeDecals());
-        }
+        EnableDecals();
+        StartCoroutine(FadeDecals());
     }
 
     private IEnumerator EndAfterDuration()

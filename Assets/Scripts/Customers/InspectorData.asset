@@ -16,7 +16,7 @@ MonoBehaviour:
   orderWaitTime: 60
   eatTime: 30
   ratDetectionRadius: 4
-  ratTolerance: 7
+  ratTolerance: 5
   payAmount: 200
   reputationIncrease: 0.6
   reputationDecrease: 1

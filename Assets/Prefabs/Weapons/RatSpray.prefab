@@ -4931,14 +4931,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b22a1516a039c564bb2d8816d24ceb73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 10
+  damage: 15
   radius: 2
   range: 8
+  capsuleLength: 1
+  nozzleOffset: 0.3
   tickRate: 0.5
-  sprayParticle: {fileID: 2963099355956014896}
   layerMask:
     serializedVersion: 2
     m_Bits: 512
+  sprayParticle: {fileID: 2963099355956014896}
+  drawGizmoAlways: 0
 --- !u!114 &5212961557223396224
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -286,6 +286,8 @@ public class RatController : MonoBehaviour, ITargetable
             aliveMesh.SetActive(false);
             deadMesh.SetActive(true);
             SpawnBloodDecal();
+            
+            Destroy(gameObject, 60f);
         }
     }
 
